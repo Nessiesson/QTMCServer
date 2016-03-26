@@ -28,7 +28,7 @@ proc _set_home(@player, @location) {
 }
 
 proc _get_name(@player) {
-	@data = _last_color(get_value("data." . _uuid(@player) . ".name"));
+	@data = get_value("data." . _uuid(@player) . ".name");
 	if(@data) {
 		return(colorize(@data . player(@player)));
 	} else {
