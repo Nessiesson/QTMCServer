@@ -28,9 +28,9 @@ proc _set_home(@player, @location) {
 }
 
 proc _get_name(@player) {
-	@data = get_value("data." . _uuid(@player) . ".name");
+	@data = _last_color(get_value("data." . _uuid(@player) . ".name"));
 	if(@data) {
-		return(@data);
+		return(colorize(@data . player(@player)));
 	} else {
 		return(player(@player));
 	}
@@ -41,8 +41,26 @@ proc _set_name(@player, @name) {
 	store_value("data." . _uuid(@player) . ".name", @name);
 	if(ponline(@player)) {
 		if(length(@name) > 16) {
-			@name = substr(@name, 0, 16);
+			@name = substr(@name . player(@player), 0, 16);
 		}
 		set_list_name(@player, @name);
 	}
+}
+
+proc _last_color(@string) {
+	@string = colorize(@string);
+	@color = "";
+	for(@i = length(@string) - 1, @i >= 0, @i--) {
+		if(@string[@i] == "\u00A7") {
+			@prevchar = @string[@i + 1];
+			if(reg_match("[0-9a-fklmnor]", @prevchar)) {
+				@color = "&" . @prevchar . @color;
+
+				if(reg_match("[0-9a-f]", @prevchar)) {
+					break();
+				}
+			}
+		}
+	}
+	return(@color);
 }

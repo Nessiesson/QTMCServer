@@ -81,7 +81,7 @@ register_command("setnick", associative_array(
 			_set_name(@sender, @sender);
 			die(colorize("&aReset name to &r" . @sender . "&a."));
 		}
-		_set_name(@sender, @args);
+		_set_name(@sender, _last_color(@args));
 		msg(colorize("&aDisplaying name as &r" . _get_name(@sender)  . "&a."));
 	}
 ));
