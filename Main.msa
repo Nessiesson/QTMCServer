@@ -1,0 +1,4 @@
+*:"/servertps" [$] = >>>
+	@tps = split(", ", split(": ", replace(strip_colors(capture_runas("~console", "/spigot:tps")), "*", ""))[1]);
+	msg(@tps);
+<<<
