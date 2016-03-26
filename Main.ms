@@ -97,3 +97,20 @@ register_command("colorcodes", associative_array(
 		msg(colorize('&00&11&22&33&44&55&66&77&88&99&aa&bb&cc&dd&ee&ff &kk&r&ll&r&mm&r&nn&r&oo &rr'));
 	}
 ));
+
+register_command("lag", associative_array(
+	description: colorize("&aShows various information that may be useful."),
+	usage: "/lag",
+	tabcompleter: closure(@alias, @sender, @args) {
+		return(array());
+	},
+	executor: closure(@alias, @sender, @args) {
+		@chunks = 0;
+		foreach(@world in get_worlds()) {
+			@chunks += array_size(get_loaded_chunks(@world));
+		}
+		msg(colorize("&aThere are currently &e" . array_size(all_entities()) . " &aentities and &e@chunks &aloaded chunks.\n"
+				. "&aThere are &e" . array_size(all_players()) . " &aplayer(s) online with a TPS of &e"
+				. array_implode(_tps(), "&a, &e")));
+	}
+));

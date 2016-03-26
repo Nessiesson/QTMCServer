@@ -64,3 +64,7 @@ proc _last_color(@string) {
 	}
 	return(@color);
 }
+
+proc _tps() {
+	return(split(", ", split(": ", replace(strip_colors(capture_runas("~console", "/spigot:tps")), "*", ""))[1]));
+}
