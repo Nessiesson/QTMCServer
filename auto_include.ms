@@ -39,9 +39,10 @@ proc _get_name(@player) {
 proc _set_name(@player, @name) {
 	@name = colorize(@name);
 	store_value("data." . _uuid(@player) . ".name", @name);
+	@name .= player(@player);
 	if(ponline(@player)) {
 		if(length(@name) > 16) {
-			@name = substr(@name . player(@player), 0, 16);
+			@name = substr(@name, 0, 16);
 		}
 		set_list_name(@player, @name);
 	}

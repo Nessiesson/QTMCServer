@@ -7,7 +7,7 @@ bind(player_join, null, null, @event) {
 }
 
 bind(player_chat, null, null, @event) {
-	modify_event("format", colorize(_get_name(@event["player"]) . "&r: %2$s"));
+	modify_event("format", colorize(_last_color(_get_name(@event["player"])) . "&r: %2$s"));
 	modify_event("message", colorize(@event["message"]));
 }
 
