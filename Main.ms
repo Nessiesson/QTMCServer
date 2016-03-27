@@ -98,5 +98,12 @@ register_command("lag", associative_array(
 		msg(colorize("&aThere are currently &e" . array_size(all_entities()) . " &aentities and &e@chunks &aloaded chunks.\n"
 				. "&aThere are &e" . array_size(all_players()) . " &aplayer(s) online with a TPS of &e"
 				. array_implode(_tps(), "&a, &e")));
+		
+		if(array_index_exists(@args, 0) && to_lower(@args[0]) == "all") {
+			foreach(@player in all_players()) {
+				msg(colorize(_get_name(@player) . "&a: &e" . array_size(entities_in_radius(ploc(@player), 16 * 10))
+						." &aentities in area."));
+			}
+		}
 	}
 ));
