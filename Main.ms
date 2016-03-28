@@ -1,7 +1,6 @@
 bind(player_join, null, null, @event) {
 	@player = @event["player"];
-	@name = color(rand(0, 16)) . @player;
-	_set_name(@player, @name);
+	@name = _get_name(@player);
 
 	if(length(@name) > 16) {
 		@name = substr(@name, 0, 16);
@@ -69,6 +68,31 @@ register_command("home", associative_array(
 			die(colorize("&cNo home was found."));
 		}
 		_teleport(@sender, @home);
+	}
+));
+
+register_command("setname", associative_array(
+	description: colorize("&aA name command."),
+	usage: "/setname <nick>",
+	tabcompleter: closure(@alias, @sender, @args) {
+		if(array_size(@args) == 1) {
+			return(array("clear"));
+		} else {
+			return(array());
+		}
+	},
+	aliases: array("setcolor", "setcolour"),
+	executor: closure(@alias, @sender, @args) {
+		@args = array_implode(@args, " ");
+		if(@args == "") {
+			die(colorize("&aUsage: &e" . reflect_pull("command") . " <nick|clear>\n"));
+		}
+		if(to_lower(@args) == "clear") {
+			_set_name(@sender, "&f" . @sender);
+			die(colorize("&aName cleared."));
+		}
+		_set_name(@sender, _last_color(@args) . @sender);
+		msg(colorize("&aDisplaying name as &r" . _get_name(@sender)  . "&a."));
 	}
 ));
 

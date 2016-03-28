@@ -47,6 +47,24 @@ proc _set_name(@player, @name) {
 	}
 }
 
+proc _last_color(@string) {
+	@string = colorize(@string);
+	@color = "";
+	for(@i = length(@string) - 1, @i >= 0, @i--) {
+		if(@string[@i] == "\u00A7") {
+			@prevchar = @string[@i + 1];
+			if(reg_match("[0-9a-fklmnor]", @prevchar)) {
+				@color = "&" . @prevchar . @color;
+
+				if(reg_match("[0-9a-f]", @prevchar)) {
+					break();
+				}
+			}
+		}
+	}
+	return(@color);
+}
+
 proc _tps() {
 	return(split(", ", split(": ", replace(strip_colors(capture_runas("~console", "/spigot:tps")), "*", ""))[1]));
 }
