@@ -39,6 +39,7 @@ bind(player_enter_bed, null, null, @event) {
 	if(@percentage >= 0.2) {
 		set_timeout(1000, closure() {
 			set_world_time(@world, 0);
+			storm(false, @world);
 			broadcast(colorize("&aThe power of beds has made it day."));
 		});
 	}
