@@ -1,9 +1,10 @@
 set_interval(5000, closure() {
-	foreach(@world in get_worlds()) {
-		foreach(@chunk in get_loaded_chunks(@world)) {
-			queue_push(closure() {
-				refresh_chunk(@chunk);
-			});
+	foreach(@player in all_players()) {
+		@loc = ploc(@player);
+		for(@i = -16, @i <= 16, @i += 16) {
+			for(@j = -16, @j <= 16, @j += 16) {
+				refresh_chunk(associative_array(world: @loc["world"], x: @loc["x"] + @i, z: @loc["z"] + @j));
+			}
 		}
 	}
 });
