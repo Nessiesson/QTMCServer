@@ -68,3 +68,50 @@ proc _last_color(@string) {
 proc _tps() {
 	return(split(", ", split(": ", replace(strip_colors(capture_runas("~console", "/spigot:tps")), "*", ""))[1]));
 }
+
+proc _launch_firework(@location) {
+	@typeArray = array(
+		"BALL",
+		"BALL_LARGE",
+		"STAR",
+		"BURST",
+		"CREEPER",
+	);
+	@colorArray = array(
+		"WHITE",
+		"BLUE",
+		"FUCHSIA",
+		"MAROON",
+		"GREEN",
+		"GREY",
+		"AQUA",
+		"OLIVE",
+		"NAVY",
+		"SILVER",
+		"YELLOW",
+		"BLACK",
+		"LIME",
+		"ORANGE",
+		"PURPLE",
+		"RED",
+		"GRAY",
+		"TEAL",
+	);
+	@firework = associative_array();
+	@firework["strength"] = rand(0, 5);
+	@firework["flicker"] = rand(0, 2);
+	@firework["trail"] = rand(0, 2);
+	@firework["type"] = @typeArray[rand(0, array_size(@typeArray))];
+	@firework["colors"] = array();
+	@firework["fade"] = array();
+	@colorsRandom = array_rand(@colorArray, rand(1, 19));
+	foreach(@c in @colorsRandom) {
+		@firework["colors"][] = @colorArray[@c];
+	}
+	@fadeRandom = array_rand(@colorArray, rand(1, 19));
+	foreach(@f in @fadeRandom) {
+		@firework["fade"][] = @colorArray[@f];
+	}
+	@location["y"] += 1;
+	launch_firework(@location, @firework);
+};

@@ -34,8 +34,9 @@ bind(player_enter_bed, null, null, @event) {
 		++@beds[@world];
 	}
 	@percentage = @beds[@world] / array_size(all_players(@world));
-	broadcast(colorize(_get_name(@player) . "&a is now sleeping (&e" . @beds[@world]
-			. "/" . array_size(all_players(@world)) . "&a)."));
+	broadcast(colorize(_get_name(@player) . "&a is now sleeping (&e"
+			. @beds[@world]	. "&a/&e" . array_size(all_players(@world))
+			. "&a)."));
 	if(@percentage >= 0.2) {
 		set_timeout(1000, closure() {
 			set_world_time(@world, 0);
@@ -55,6 +56,17 @@ bind(player_leave_bed, null, null, @event) {
 	}
 	_set_home(@player, ploc(@player));
 	tmsg(@player, colorize("&aYour &e/home&a has been set."));
+}
+
+bind(player_interact, null, associative_array(item: data_values("clock")), @event) {
+	if(@event["action"] == "left_click_block" || @event["action"] == "left_click_air") {
+		die();
+	}
+	@player = @event["player"];
+	if((time() - import("fireworks.@player.cooldown")) >= 250) {
+		_launch_firework(ploc(@player));
+		export("fireworks.@player.cooldown", time());
+	}
 }
 
 register_command("home", associative_array(
